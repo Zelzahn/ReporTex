@@ -16,3 +16,25 @@ Options:
 - OrdinaryTitle (default)
 - LongTitle
 - ExtraLongTitle
+
+## Style commands
+### Language
+Sets the Babel language.
+
+Options:
+- Dutch: nl (default)
+- English: en
+
+### Document class
+If it's memoir the chapter command will be redefined.
+
+Options:
+- memoir
+- other (default)
+
+### Margins
+Small margins is defined to be 1 inch.
+
+Options:
+- normalMargins (default)
+- smallMargins

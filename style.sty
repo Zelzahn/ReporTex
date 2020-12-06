@@ -1,31 +1,64 @@
 \NeedsTeXFormat{LaTeX2e}
 
-
 \ProvidesPackage{style}[Custom LaTeX style]
+
+% Options
+\DeclareOption{en} { \def \MNS@lang {english} }
+\DeclareOption{nl}  { \def \MNS@lang {dutch} }
+
+\DeclareOption{memoir} { \def \MNS@class {memoir} }
+\DeclareOption{other}  { \def \MNS@class {other} }
+
+\DeclareOption{normalMargins} { \def \MNS@marg {0} }
+\DeclareOption{smallMargins}  { \def \MNS@marg {1} }
+
+%% Standard options:
+\ExecuteOptions{nl}
+\ExecuteOptions{other}
+\ExecuteOptions{normalMargins}
+\ProcessOptions\relax
 
 %% Encoding
 \RequirePackage[utf8]{inputenx}
 \RequirePackage[T1]{fontenc}
 
-% Small margins
-\usepackage[margin=1in]{geometry}
-
 %% Language
-\RequirePackage{babel}
+\RequirePackage[\MNS@lang]{babel}
 \RequirePackage{csquotes}
 
 %% Miscellaneous
 \RequirePackage{xspace}         % Clever space
 \RequirePackage{multirow}       % Rows spanning multiple lines in tables
+\RequirePackage{xifthen}        % Ifthenelse
 
-%% Chapter
-\chapterstyle{demo2}
-\renewcommand*{\printchaptername}
+% Document class
+\ifthenelse
 {
-    \centering\chapnamefont\MakeUppercase{\@chapapp}
+    \equal{\MNS@class}{memoir}
 }
-\renewcommand*{\printchapternum}{\chapnumfont\thechapter\space}
-\renewcommand*{\chaptitlefont}{\Huge\bfseries\boldmath\sffamily\center}
+{
+    %% Chapter
+    \chapterstyle{demo2}
+    \renewcommand*{\printchaptername}
+    {
+        \centering\chapnamefont\MakeUppercase{\@chapapp}
+    }
+    \renewcommand*{\printchapternum}{\chapnumfont\thechapter\space}
+    \renewcommand*{\chaptitlefont}{\Huge\bfseries\boldmath\sffamily\center}
+}
+{}
+
+
+
+\ifthenelse
+{
+    \equal{\MNS@marg}{1}
+}
+{
+    % Small margins
+    \usepackage[margin=1in]{geometry}
+}
+{}
 
 %% Bibliography
 \usepackage[
