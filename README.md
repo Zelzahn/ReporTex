@@ -1,4 +1,4 @@
-# ReporTex
+# ReporTex (*Based upon: [mnfrontpage](https://github.com/martinhelso/mnfrontpage)*)
 My report LaTeX template  
 
 ## Frontpage commands
@@ -38,5 +38,3 @@ Small margins is defined to be 1 inch.
 Options:
 - normalMargins (default)
 - smallMargins
-
-*Based upon: [mnfrontpage](https://github.com/martinhelso/mnfrontpage)*
