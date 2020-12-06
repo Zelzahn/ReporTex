@@ -1,0 +1,46 @@
+\NeedsTeXFormat{LaTeX2e}
+
+
+\ProvidesPackage{style}[Custom LaTeX style]
+
+%% Encoding
+\RequirePackage[utf8]{inputenx}
+\RequirePackage[T1]{fontenc}
+
+% Small margins
+\usepackage[margin=1in]{geometry}
+
+%% Language
+\RequirePackage{babel}
+\RequirePackage{csquotes}
+
+%% Miscellaneous
+\RequirePackage{xspace}         % Clever space
+\RequirePackage{multirow}       % Rows spanning multiple lines in tables
+
+%% Chapter
+\chapterstyle{demo2}
+\renewcommand*{\printchaptername}
+{
+    \centering\chapnamefont\MakeUppercase{\@chapapp}
+}
+\renewcommand*{\printchapternum}{\chapnumfont\thechapter\space}
+\renewcommand*{\chaptitlefont}{\Huge\bfseries\boldmath\sffamily\center}
+
+%% Bibliography
+\usepackage[
+backend=biber,
+style=alphabetic,
+sorting=ynt
+]{biblatex}
+\addbibresource{bibliography.bib}
+
+%% Table of contents
+\addto\captionsdutch{
+    \renewcommand*\contentsname{Inhoudstafel} % Inhoudsopgave sounds lame
+}
+\addto\captionsenglish{
+    \renewcommand*\contentsname{Summary}
+}
+
+\endinput

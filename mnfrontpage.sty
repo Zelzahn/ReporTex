@@ -1,0 +1,231 @@
+%% Identification part:
+
+\NeedsTeXFormat{LaTeX2e}[1994/12/01]
+
+\ProvidesClass{mnfrontpage}
+
+\def \MNFP@indent { 0 mm}
+
+\DeclareOption{en} { \def \MNFP@lang {en} }
+\DeclareOption{nl}  { \def \MNFP@lang {nl} }
+
+%% Length of titles:
+
+\DeclareOption{OrdinaryTitle}
+{
+    \def \MNFP@title {Ordinary}
+    \def \MNFP@titlesize {\fontsize{32}{35pt}}
+}
+\DeclareOption{LongTitle}
+{
+    \def \MNFP@title {Long}
+    \def \MNFP@titlesize {\fontsize{24}{27pt}}
+}
+\DeclareOption{ExtraLongTitle}
+{
+    \def \MNFP@title {ExtraLong}
+    \def \MNFP@titlesize {\fontsize{17}{20pt}}
+}
+
+\DeclareOption{BlankPage}    { \def \MNFP@secondpage {blank}    }
+\DeclareOption{OnlyFrontpage}{ \def \MNFP@secondpage {}         }
+
+
+%% Standard options:
+
+\ExecuteOptions{nl}
+\ExecuteOptions{OrdinaryTitle}
+\ExecuteOptions{OnlyFrontpage}
+\ProcessOptions\relax
+
+%% Initial code:
+
+\RequirePackage[T1]{fontenc}
+\RequirePackage{calc}
+\RequirePackage{eso-pic}
+\RequirePackage{picture}
+\RequirePackage{xifthen}
+\RequirePackage{tikz}
+\RequirePackage{fix-cm}
+
+\definecolor{bannergrey}{cmyk}{0, 0, 0, 0.3}
+
+%% The main command:
+
+\@ifclassloaded{memoir}
+{
+    \newcommand{\mnfrontpage}
+    {
+        \def \and {\leavevmode\unskip, }
+        \begin{titlingpage}
+            \AddToShipoutPictureBG*{\MNFP@print@background}
+            \AddToShipoutPictureFG*{\MNFP@print@title}
+            \null
+        \end{titlingpage}
+    }
+}
+{
+    \newcommand{\mnfrontpage}
+    {
+        \def \and {\leavevmode\unskip, }
+        \begin{titlepage}
+            \AddToShipoutPictureBG*{\MNFP@print@background}
+            \AddToShipoutPictureFG*{\MNFP@print@title}
+            \null
+        \end{titlepage}
+        \ifthenelse{ \equal{\MNFP@secondpage}{blank} }
+        {
+            \MNFP@blankpage
+        }
+        {}
+    }
+}
+
+%% Additional commands:
+
+\newcommand{\subtitle}[1]{ \def \MNFP@subtitle{#1} }
+\subtitle{}
+
+\newcommand{\kind}[1]{ \def \MNFP@kind{#1} }
+\kind{}
+
+%% Include the title page background:
+
+\newcommand{\MNFP@print@background}
+{
+    \put(-3 bp, 0 bp)
+    {
+        \includegraphics
+             {figures/mnfrontpage-images/mnfrontpage-bg}
+    }
+
+    \put(-3 mm, 142 mm)
+    {
+        \begin{tikzpicture}[scale = 1mm]
+            % \filldraw[white, opacity = 0.8]
+            %     (0, 2.5) rectangle (\paperwidth, 3.73);
+            \filldraw[white, opacity = 0.6]
+                (0, 0) rectangle (\paperwidth, 2.5);
+            \filldraw[bannergrey, opacity = 0.7]
+                (0, 0) rectangle (\paperwidth, 2.5);
+        \end{tikzpicture}
+    }
+
+    \put(25 mm + \MNFP@indent, 25 mm)
+    {
+        \includegraphics[]
+            {figures/mnfrontpage-images/logo_\MNFP@lang}
+    }
+
+     \put(150 mm + \MNFP@indent, 25 mm)
+    {
+        \includegraphics[]
+            {figures/mnfrontpage-images/faculty_\MNFP@lang}
+    }
+}
+
+%% Include the title, subtitle, author and date:
+
+\newcommand{\MNFP@print@title}
+{
+    {
+        \newlength{\MNFPtitlelength}
+
+        \def \MNFP@titlepos {42.4 mm}
+        \setlength{\MNFPtitlelength}
+            {\paperwidth - 19 mm - \MNFP@titlepos - \MNFP@indent}
+
+        \put(\MNFP@titlepos + \MNFP@indent, 141.5 mm)
+        {
+            \vbox to 7.15cm
+            {
+                \hsize = \MNFPtitlelength
+                \raggedright
+
+                % Redefinition of standard \LaTeX command because
+                % the font package 'bera' mangles it!
+                \ifthenelse{ \isundefined{\fveLaTeX} }{}
+                {
+                    \DeclareRobustCommand{\mn@LaTeX}
+                    {
+                        L\kern-.36em
+                        {
+                            \sbox\z@ T
+                            \vbox to\ht\z@
+                            {
+                                \hbox
+                                {
+                                    \check@mathfonts
+                                    \fontsize\sf@size\z@
+                                    \math@fontsfalse\selectfont
+                                    A
+                                }
+                                \vss
+                            }
+                        }
+                        \kern-.15em
+                        \TeX
+                    }
+                    \let \LaTeX = \mn@LaTeX
+                }
+
+                \vfill
+
+                \fontfamily{phv}
+                \MNFP@titlesize
+                \selectfont
+                \bfseries
+                \@title
+
+                \newlength{\MNFP@titlelength}
+                \settowidth{\MNFP@titlelength}{\@title}
+
+                \ifthenelse
+                {
+                    \equal{\MNFP@title}{Ordinary}
+                    \AND
+                    \lengthtest{\MNFP@titlelength < \hsize}
+                }
+                {
+                    \def \MNFP@skip{2.5 em}
+                }
+                {
+                    \def \MNFP@skip{1.5 em}
+                }
+
+                \vskip 0.5ex
+
+
+                \normalfont
+                \fontfamily{phv}
+                \fontsize{17}{20pt}
+                \selectfont
+                \MNFP@subtitle
+
+                \vskip \MNFP@skip
+
+                {
+                    \bfseries
+                    \ifdefined\authors
+                        \authors
+                    \else
+                        \@author
+                    \fi
+                }
+                \\[0.1ex]
+                \MNFP@kind
+
+                \vfill
+            }
+        }
+    }
+}
+
+\newcommand{\MNFP@blankpage}
+{
+    \thispagestyle{empty}
+    \null
+    \newpage
+}
+
+\endinput
