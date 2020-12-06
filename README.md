@@ -16,3 +16,5 @@ Options:
 - OrdinaryTitle (default)
 - LongTitle
 - ExtraLongTitle
+
+Based upon: [mnfrontpage](https://github.com/martinhelso/mnfrontpage)
