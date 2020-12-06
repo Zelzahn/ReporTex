@@ -38,3 +38,5 @@ Small margins is defined to be 1 inch.
 Options:
 - normalMargins (default)
 - smallMargins
+
+*Based upon: [mnfrontpage](https://github.com/martinhelso/mnfrontpage)*
